@@ -1,25 +1,14 @@
 import { Server } from 'miragejs';
-import factories from './factories';
-import routes from './routes';
-import models from './models';
-import seeds from './seeds';
+import products from '@/mocks/products.json';
 
-const config = (environment) => {
-  const config = {
+export const makeServer = ({ environment = 'development' } = {}) => {
+  return new Server({
     environment,
-    factories,
-    models,
-    routes,
-    seeds,
-  };
-
-  if (process.env.NODE_ENV !== 'development' && process.env.USE_API) {
-    config.urlPrefix = 'http://localhost:5000';
-  }
-
-  return config;
+    routes() {
+      this.namespace = 'api';
+      this.get('products', () => ({
+        products,
+      }));
+    },
+  });
 };
-
-export function makeServer({ environment = 'development' } = {}) {
-  return new Server(config(environment));
-}
