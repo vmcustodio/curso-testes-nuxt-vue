@@ -53,10 +53,23 @@ describe('ProductList - integration', () => {
       },
     });
 
-    await Vue.nextTick();
+    await Vue.nextTick(); // retorna uma promise, o await espera até que a promise seja resolvida, com o metodo ele assegura que seja resolvida. o NextTick assegura que os dados foram modificados e renderizar / DOM
 
     const cards = wrapper.findAllComponents(ProductCard);
 
     expect(cards).toHaveLength(10);
+  });
+  it('should display the error message when Promise rejects', async () => {
+    axios.get.mockReturnValue(Promise.reject(new Error('')));
+
+    const wrapper = mount(ProductList, {
+      mocks: {
+        $axios: axios,
+      },
+    });
+
+    await Vue.nextTick();
+
+    expect(wrapper.text()).toContain('Problemas ao carregar a lista');
   });
 });
