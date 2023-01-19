@@ -35,8 +35,7 @@ export default {
     list() {
       if (this.searchTerm !== '') {
         return this.products.filter(({ title }) => {
-          // eslint-disable-next-line unicorn/prefer-includes
-          return title.indexOf(this.searchTerm) > -1;
+          return title.includes(this.searchTerm);
         });
       }
       return this.products;
