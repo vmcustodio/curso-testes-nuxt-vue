@@ -60,6 +60,7 @@ describe('ProductList - integration', () => {
     expect(cards).toHaveLength(10);
   });
   it('should display the error message when Promise rejects', async () => {
+    // eslint-disable-next-line unicorn/error-message
     axios.get.mockReturnValue(Promise.reject(new Error('')));
 
     const wrapper = mount(ProductList, {
@@ -71,5 +72,38 @@ describe('ProductList - integration', () => {
     await Vue.nextTick();
 
     expect(wrapper.text()).toContain('Problemas ao carregar a lista');
+  });
+
+  it('should filter the product list when a search is performed', async () => {
+    // Arrange
+    const products = [
+      ...server.createList('product', 10),
+      server.create('product', {
+        title: 'Meu relógio amado',
+      }),
+      server.create('product', {
+        title: 'Meu outro relógio estimado',
+      }),
+    ];
+
+    axios.get.mockReturnValue(Promise.resolve({ data: { products } }));
+
+    const wrapper = mount(ProductList, {
+      mocks: {
+        $axios: axios,
+      },
+    });
+
+    await Vue.nextTick();
+
+    // Act
+    const search = wrapper.findComponent(Search);
+    search.find('input[type="search"]').setValue('relógio');
+    await search.find('form').trigger('submit');
+
+    // Assert
+    const cards = wrapper.findAllComponents(ProductCard);
+    expect(wrapper.vm.searchTerm).toEqual('relógio');
+    expect(cards).toHaveLength(2);
   });
 });
