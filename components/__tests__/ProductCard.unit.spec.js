@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { makeServer } from '@/miragejs/server.js';
 import ProductCard from '@/components/ProductCard';
+import { cartState } from '@/state';
 
 const mountProductCard = () => {
   const product = server.create('product', {
@@ -44,18 +45,31 @@ describe('ProductCard - unit', () => {
     // console.log(wrapper.html()); // exibe o html do wrapper (antes do beforeEach, por exemplo a imagem vinha vazia)
   });
 
-  it('should emit the event addToCart with product object when button gets clicked', async () => {
+  // it('should emit the event addToCart with product object when button gets clicked', async () => {
+  //   const { wrapper, product } = mountProductCard();
+
+  //   await wrapper.find('button').trigger('click');
+
+  //   // assert event has been emitted
+  //   expect(wrapper.emitted().addToCart).toBeTruthy();
+
+  //   // assert event count
+  //   expect(wrapper.emitted().addToCart.length).toBe(1);
+
+  //   // assert event payload
+  //   expect(wrapper.emitted().addToCart[0]).toEqual([{ product }]);
+  // });
+  it('should add item to cartState on button click', async () => {
     const { wrapper, product } = mountProductCard();
 
     await wrapper.find('button').trigger('click');
 
-    // assert event has been emitted
-    expect(wrapper.emitted().addToCart).toBeTruthy();
+    expect(cartState.items).toHaveLength(1);
+  });
 
-    // assert event count
-    expect(wrapper.emitted().addToCart.length).toBe(1);
+  it('should ensure product is not added to the cart twice', async () => {
+    const { wrapper, product } = mountProductCard();
 
-    // assert event payload
-    expect(wrapper.emitted().addToCart[0]).toEqual([{ product }]);
+    expect(cartState.items).toHaveLength(1);
   });
 });
