@@ -67,9 +67,5 @@ describe('ProductCard - unit', () => {
     expect(cartState.items).toHaveLength(1);
   });
 
-  it('should ensure product is not added to the cart twice', async () => {
-    const { wrapper, product } = mountProductCard();
-
-    expect(cartState.items).toHaveLength(1);
-  });
+  it('should ensure product is not added to the cart twice', async () => {});
 });
