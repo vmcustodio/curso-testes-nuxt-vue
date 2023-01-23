@@ -25,7 +25,7 @@
     </div>
     <div class="px-5 py-3">
       <h3 class="text-gray-700 uppercase">{{ product.title }}</h3>
-      <span class="text-gray-500 mt-2">R${{ product.price }}</span>
+      <span class="text-gray-500 mt-2">${{ product.price }}</span>
     </div>
   </div>
 </template>
@@ -41,8 +41,7 @@ export default {
   },
   methods: {
     addToCart() {
-      // this.$emit('addToCart', { product: this.product });
-      this.$cart.open = true;
+      this.$cart.open();
       this.$cart.addProduct(this.product);
     },
   },
