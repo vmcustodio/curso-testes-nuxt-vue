@@ -114,7 +114,6 @@
 
 <script>
 import Cart from '@/components/Cart';
-import { cartState } from '@/state';
 
 export default {
   components: { Cart },
@@ -125,15 +124,19 @@ export default {
   // },
   computed: {
     isCartOpen() {
-      return cartState.open;
+      return this.$cart.getState().open;
     },
     products() {
-      return cartState.items;
+      return this.$cart.getState().items;
     },
   },
   methods: {
     toggleCart() {
-      cartState.open = !cartState.open;
+      if (this.$cart.getState().open) {
+        this.$cart.close();
+      } else {
+        this.$cart.open();
+      }
     },
   },
 };

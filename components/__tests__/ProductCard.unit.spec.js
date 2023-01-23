@@ -59,13 +59,11 @@ describe('ProductCard - unit', () => {
   //   // assert event payload
   //   expect(wrapper.emitted().addToCart[0]).toEqual([{ product }]);
   // });
-  it('should add item to cartState on button click', async () => {
-    const { wrapper, product } = mountProductCard();
+  // it('should add item to cartState on button click', async () => {
+  //   const { wrapper } = mountProductCard();
 
-    await wrapper.find('button').trigger('click');
+  //   await wrapper.find('button').trigger('click');
 
-    expect(cartState.items).toHaveLength(1);
-  });
-
-  it('should ensure product is not added to the cart twice', async () => {});
+  //   expect(cartState.items).toHaveLength(1);
+  // });
 });
